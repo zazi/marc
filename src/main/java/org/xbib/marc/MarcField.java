@@ -473,8 +473,16 @@ public class MarcField implements Comparable<MarcField> {
          * @return this builder
          */
         public Builder subfield(String subfieldId, String value) {
-            subfields.add(new Subfield(subfieldId, value));
-            subfieldIds.add(subfieldId);
+            final String validSubfieldId;
+            if (subfieldId != null) {
+                // check if subfield ids are visible replacements like "-" or "." . Replace with blank.
+                validSubfieldId = subfieldId.replace('-', ' ').replace('.', ' ');
+            } else {
+
+                validSubfieldId = null;
+            }
+            subfields.add(new Subfield(validSubfieldId, value));
+            subfieldIds.add(validSubfieldId);
             return this;
         }
 
